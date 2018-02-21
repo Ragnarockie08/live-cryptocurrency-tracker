@@ -1,18 +1,19 @@
 package crypto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Response {
 
-    private static List<CryptoCurrnecy> cryptoCurrnecy;
+    private List<CryptoCurrnecy> cryptoCurrnecy;
 
-    public Response() {
+    public Response(List<CryptoCurrnecy> objects) {
+        this.cryptoCurrnecy = objects;
     }
 
-    public static List<CryptoCurrnecy> getCryptoCurrnecy() {
+    public List<CryptoCurrnecy> getCryptoCurrnecy() {
         return cryptoCurrnecy;
     }
 
