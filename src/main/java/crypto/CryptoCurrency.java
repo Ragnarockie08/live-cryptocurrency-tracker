@@ -9,7 +9,6 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CryptoCurrency implements Serializable {
 
-    private String id;
     private String name;
     private String symbol;
     private int rank;
@@ -38,10 +37,6 @@ public class CryptoCurrency implements Serializable {
 
     public CryptoCurrency(){
 
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getName() {
