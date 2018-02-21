@@ -1,18 +1,18 @@
-package inputService;
+package service;
 
 import crypto.CryptoCurrency;
-import service.Service;
-
+import helper.Action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class InputHandler implements Runnable {
+public class InputService implements Runnable {
 
-    private List<CryptoCurrency> observedCurrencies;
+    private static List<CryptoCurrency> observedCurrencies = new ArrayList<>();
+    private volatile boolean run;
 
-    public InputHandler() {
-        this.observedCurrencies = new ArrayList<>();
+    public InputService(){
+        run = true;
     }
 
     @Override
@@ -20,8 +20,11 @@ public class InputHandler implements Runnable {
 
         String action = "";
 
-        while(!(Thread.currentThread().isInterrupted() || action.equals(Action.EXIT.getValue()))){
+        while(isRunning()){
             action = getInput();
+            if (action.equals(Action.EXIT.getValue())){
+                stopApp();
+            }
             try {
                 checkInput(action);
             } catch (NullPointerException e){
@@ -37,8 +40,6 @@ public class InputHandler implements Runnable {
 
         if (action.equals(Action.SELECT)) {
             runSelect(args);
-        } else if (action.equals(Action.CHECK)){
-            runCheck();
         }
     }
 
@@ -46,20 +47,22 @@ public class InputHandler implements Runnable {
 
         String symbol;
 
-        if (args.length > 1){
+        if (args.length > 1) {
             symbol = args[1];
-            for (CryptoCurrency currency: Service.getCurrentResponse())
-                if (currency.getSymbol().equals(symbol)){
+            for (CryptoCurrency currency : Service.getCurrentResponse()) {
+                if (currency.getSymbol().equals(symbol) && !observedCurrencies.contains(currency)) {
                     observedCurrencies.add(currency);
                 }
+            }
         }
     }
 
-    private void runCheck(){
+    private boolean isRunning(){
+        return run;
+    }
 
-        if (!observedCurrencies.isEmpty()){
-            System.out.println("display");
-        }
+    private void stopApp(){
+        run = false;
     }
 
     private String getInput(){
@@ -68,14 +71,12 @@ public class InputHandler implements Runnable {
         Scanner scanner;
 
         scanner = new Scanner(System.in);
-        System.out.println("Command:\n");
         input = scanner.nextLine();
 
         return input;
     }
 
-
-
-
-
+    public static List<CryptoCurrency> getObservedCurrencies() {
+        return observedCurrencies;
+    }
 }

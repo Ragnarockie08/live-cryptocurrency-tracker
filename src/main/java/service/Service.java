@@ -10,7 +10,7 @@ public class Service implements Runnable {
 
     private OutputService outputService;
     private RestTemplate restTemplate;
-    private static List<CryptoCurrency> currentResponse = new ArrayList<>(  );
+    private static List<CryptoCurrency> currentResponse = new ArrayList<>();
 
     public Service(OutputService outputService, RestTemplate restTemplate) {
         this.outputService = outputService;
@@ -23,9 +23,10 @@ public class Service implements Runnable {
         while(!Thread.currentThread().isInterrupted()){
             try{
                 getResponse();
-                this.outputService.printTable(currentResponse);
-                Thread.sleep(10000);
+                outputService.printTable(InputService.getObservedCurrencies());
+                Thread.sleep(20000);
             } catch (InterruptedException e){
+                System.out.println("Data loading service error");
                 Thread.currentThread().interrupt();
             }
         }
@@ -35,6 +36,7 @@ public class Service implements Runnable {
 
         ResponseEntity<CryptoCurrency[]> response = restTemplate.getForEntity(
                 "https://api.coinmarketcap.com/v1/ticker/", CryptoCurrency[].class);
+       clearScreen();
 
         currentResponse = Arrays.asList(response.getBody());
     }
@@ -42,4 +44,10 @@ public class Service implements Runnable {
     public static List<CryptoCurrency> getCurrentResponse() {
         return currentResponse;
     }
+
+    private void clearScreen(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
 }

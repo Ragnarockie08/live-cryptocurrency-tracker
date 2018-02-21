@@ -1,4 +1,4 @@
-package inputService;
+package helper;
 
 public enum Action {
 
