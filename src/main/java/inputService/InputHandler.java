@@ -9,22 +9,18 @@ import java.util.Scanner;
 
 public class InputHandler implements Runnable {
 
-    private List<CryptoCurrency> currencies;
+    private List<CryptoCurrency> observedCurrencies;
 
     public InputHandler() {
-        this.currencies = new ArrayList<>();
+        this.observedCurrencies = new ArrayList<>();
     }
 
     @Override
     public void run() {
 
-    }
-
-    public void handleInput(){
-
         String action = "";
 
-        while(!action.equals(Action.EXIT.getValue())){
+        while(!(Thread.currentThread().isInterrupted() || action.equals(Action.EXIT.getValue()))){
             action = getInput();
             try {
                 checkInput(action);
@@ -33,6 +29,7 @@ public class InputHandler implements Runnable {
             }
         }
     }
+
     private void checkInput(String input) throws NullPointerException{
 
         String[] args = input.split(" +");
@@ -53,18 +50,17 @@ public class InputHandler implements Runnable {
             symbol = args[1];
             for (CryptoCurrency currency: Service.getCurrentResponse())
             if (currency.getSymbol().equals(symbol)){
-                currencies.add(currency);
+                observedCurrencies.add(currency);
             }
         }
-
     }
 
     private void runCheck(){
-        if (!currencies.isEmpty()){
+
+        if (!observedCurrencies.isEmpty()){
             System.out.println("display");
         }
     }
-
 
     private String getInput(){
 
