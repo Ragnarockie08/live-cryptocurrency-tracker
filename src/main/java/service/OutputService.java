@@ -8,7 +8,6 @@ import java.util.List;
 public class OutputService {
 
     private static String[] columnNames = {
-        "id",
         "name",
         "symbol",
         "rank",
@@ -27,27 +26,30 @@ public class OutputService {
 
     void printTable(List<CryptoCurrency> currenciesList) {
 
-        CryptoCurrency[] cryptoCurrenciesArray = (CryptoCurrency[]) currenciesList.toArray();
-        int cryptoCurrenciesArraySize = cryptoCurrenciesArray.length;
-        int cryptoCurrencyFieldsNumber = 15;
+        if (!currenciesList.isEmpty()) {
+            int cryptoCurrenciesArraySize = currenciesList.size();
+            int cryptoCurrencyFieldsNumber = 14;
 
-        Object[][] data = new Object[cryptoCurrenciesArraySize][cryptoCurrencyFieldsNumber];
+            Object[][] data = new Object[cryptoCurrenciesArraySize][cryptoCurrencyFieldsNumber];
 
-        for (int i = 0; i < cryptoCurrenciesArraySize; i++) {
-            Object[] array = new Object[]{ cryptoCurrenciesArray[i].getId(), cryptoCurrenciesArray[i].getName(),
-                                           cryptoCurrenciesArray[i].getSymbol(), cryptoCurrenciesArray[i].getRank(),
-                                           cryptoCurrenciesArray[i].getPriceUsd(), cryptoCurrenciesArray[i].getPriceBtc(),
-                                           cryptoCurrenciesArray[i].getVolumeUsd24(), cryptoCurrenciesArray[i].getMarketCapUsd(),
-                                           cryptoCurrenciesArray[i].getAvailableSupply(), cryptoCurrenciesArray[i].getTotalSupply(),
-                                           cryptoCurrenciesArray[i].getMaxSupply(), cryptoCurrenciesArray[i].getPercent1(),
-                                           cryptoCurrenciesArray[i].getPercent24(), cryptoCurrenciesArray[i].getPercent7d(),
-                                           cryptoCurrenciesArray[i].getLastUpdate() };
-            data[i] = array;
+            for (int i = 0; i < cryptoCurrenciesArraySize; i++) {
+                Object[] array = new Object[]{currenciesList.get(i).getName(),
+                        currenciesList.get(i).getSymbol(), currenciesList.get(i).getRank(),
+                        currenciesList.get(i).getPriceUsd(), currenciesList.get(i).getPriceBtc(),
+                        currenciesList.get(i).getVolumeUsd24(), currenciesList.get(i).getMarketCapUsd(),
+                        currenciesList.get(i).getAvailableSupply(), currenciesList.get(i).getTotalSupply(),
+                        currenciesList.get(i).getMaxSupply(), currenciesList.get(i).getPercent1(),
+                        currenciesList.get(i).getPercent24(), currenciesList.get(i).getPercent7d(),
+                        currenciesList.get(i).getLastUpdate() };
+                data[i] = array;
+            }
+
+            TextTable tt = new TextTable(columnNames, data);
+            tt.setAddRowNumbering( true );
+            tt.setSort( 2 );
+            tt.printTable();
         }
 
-        TextTable tt = new TextTable(columnNames, data);
-        tt.setAddRowNumbering( true );
-        tt.setSort( 2 );
-        tt.printTable();
+
     }
 }
