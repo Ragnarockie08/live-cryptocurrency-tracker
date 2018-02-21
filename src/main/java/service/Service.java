@@ -38,4 +38,8 @@ public class Service implements Runnable {
 
         currentResponse = Arrays.asList(response.getBody());
     }
+
+    public static List<CryptoCurrency> getCurrentResponse() {
+        return currentResponse;
+    }
 }
