@@ -1,9 +1,12 @@
-package service;
+package com.codecool.service;
 
-import crypto.CryptoCurrency;
+import com.codecool.crypto.CryptoCurrency;
 import dnl.utils.text.table.TextTable;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class OutputService {
 
     private static int columnNumberToSortBy;
