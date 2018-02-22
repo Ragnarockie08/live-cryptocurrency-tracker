@@ -1,5 +1,7 @@
 package helper;
 
+import service.Service;
+
 import java.util.Scanner;
 
 public class OutputHelper {
