@@ -30,8 +30,6 @@ public class CryptoCurrency implements Serializable {
     private String percent1;
     @JsonProperty("percent_change_24h")
     private String percent24;
-    @JsonProperty("percent_change_7d")
-    private String percent7d;
     @JsonProperty("last_updated")
     private String lastUpdate;
 
@@ -85,10 +83,6 @@ public class CryptoCurrency implements Serializable {
 
     public String getPercent24() {
         return percent24;
-    }
-
-    public String getPercent7d() {
-        return percent7d;
     }
 
     public String getLastUpdate() {
