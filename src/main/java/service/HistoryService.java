@@ -32,8 +32,10 @@ public class HistoryService implements Runnable {
     }
 
     private void addToHistory(){
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-        history.put(timeStamp, InputService.getObservedCurrencies());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd")
+                                 .format(Calendar.getInstance()
+                                 .getTime());
+        history.put( timeStamp, InputService.getObservedCurrencies());
 
     }
 

@@ -11,14 +11,14 @@ public class InputService implements Runnable {
     private static List<CryptoCurrency> observedCurrencies = new ArrayList<>();
     private volatile boolean run;
 
-    public InputService(){
+    public InputService() {
         run = true;
     }
 
     @Override
     public void run() {
 
-        String action = "";
+        String action;
 
         while(isRunning()){
             action = getInput();
@@ -62,7 +62,7 @@ public class InputService implements Runnable {
     }
 
     private void stopApp(){
-        run = false;
+       System.exit(0);
     }
 
     private String getInput(){
