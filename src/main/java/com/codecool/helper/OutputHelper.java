@@ -1,9 +1,10 @@
-package helper;
+package com.codecool.helper;
 
-import service.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class OutputHelper {
 
     public void clearScreen(){

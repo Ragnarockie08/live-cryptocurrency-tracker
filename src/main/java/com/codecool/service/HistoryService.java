@@ -1,6 +1,7 @@
-package service;
+package com.codecool.service;
 
-import crypto.CryptoCurrency;
+import com.codecool.crypto.CryptoCurrency;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Component
 public class HistoryService implements Runnable {
 
     private Map<String, List<CryptoCurrency>> history;

@@ -1,20 +1,22 @@
-package service;
+package com.codecool.service;
 
 
-import crypto.CryptoCurrency;
-import helper.Action;
-import helper.OutputHelper;
+import com.codecool.crypto.CryptoCurrency;
+import com.codecool.helper.Action;
+import com.codecool.helper.OutputHelper;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class InputService implements Runnable {
 
     private List<String> observedCurrencies = new ArrayList<>();
     private OutputHelper outputHelper;
     private HistoryService historyService;
     private OutputService outputService;
-
+    private ThreadService threadService;
 
     public InputService(OutputHelper outputHelper, HistoryService historyService, OutputService outputService){
 
@@ -30,7 +32,11 @@ public class InputService implements Runnable {
 
         while(!action.equals(Action.EXIT.getValue())){
             action = outputHelper.getInput();
-            Service.setIsRunning(true);
+            if (!Service.isRunning()){
+                synchronized (threadService.getServiceThread()) {
+                    threadService.notifyService();
+                }
+            }
             try {
                 checkInput(action);
             } catch (NullPointerException e) {
@@ -82,11 +88,11 @@ public class InputService implements Runnable {
     private void runHistory(String[] args){
 
         String date;
-        Service.setIsRunning(false);
 
         if (args.length > 1) {
             date = args[1];
             if (historyService.getHistory().keySet().contains(date)) {
+                Service.setIsRunning(false);
                 outputService.printTable(historyService.getHistory().get(date));
             }
         }
@@ -105,5 +111,9 @@ public class InputService implements Runnable {
             }
         }
         return currentCurrency;
+    }
+
+    public void setThreadService(ThreadService threadService) {
+        this.threadService = threadService;
     }
 }

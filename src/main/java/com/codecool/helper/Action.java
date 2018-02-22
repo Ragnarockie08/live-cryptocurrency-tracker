@@ -1,4 +1,4 @@
-package helper;
+package com.codecool.helper;
 
 public enum Action {
 

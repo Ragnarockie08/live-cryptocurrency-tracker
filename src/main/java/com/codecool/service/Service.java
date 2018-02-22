@@ -1,11 +1,13 @@
-package service;
+package com.codecool.service;
 
-import crypto.CryptoCurrency;
-import helper.OutputHelper;
+import com.codecool.crypto.CryptoCurrency;
+import com.codecool.helper.OutputHelper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
+@Component
 public class Service implements Runnable {
 
     private OutputService outputService;
@@ -25,17 +27,19 @@ public class Service implements Runnable {
     @Override
     public void run(){
 
-        while(!Thread.currentThread().isInterrupted()){
-            if (!isRunning){
-                continue;
-            }
-            try{
-                getResponse();
-                outputService.printTable(inputService.refreshList());
-                Thread.sleep(10000);
-            } catch (InterruptedException e){
-                System.out.println("Data loading service error");
-                Thread.currentThread().interrupt();
+        synchronized (Thread.currentThread()){
+            while(!Thread.currentThread().isInterrupted()) {
+                try {
+                    if (!isRunning) {
+                        Thread.currentThread().wait();
+                    }
+                    getResponse();
+                    outputService.printTable(inputService.refreshList());
+                    Thread.sleep(20000);
+                } catch (InterruptedException e) {
+                    System.out.println("Data loading service error");
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }
@@ -55,5 +59,9 @@ public class Service implements Runnable {
 
     public static void setIsRunning(boolean isRunning) {
         Service.isRunning = isRunning;
+    }
+
+    public static boolean isRunning() {
+        return isRunning;
     }
 }
