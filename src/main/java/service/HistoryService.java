@@ -27,7 +27,6 @@ public class HistoryService implements Runnable {
                 System.out.println("History service error");
                 Thread.currentThread().interrupt();
             }
-            System.out.println(history);
         }
     }
 
