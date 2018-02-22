@@ -3,10 +3,10 @@ package helper;
 public enum Action {
 
     SELECT("select"),
-    CHECK("check"),
     EXIT("exit"),
     SORT("sort"),
-    HISTORY("history");
+    HISTORY("history"),
+    CHECK("check");
 
     private String action;
 

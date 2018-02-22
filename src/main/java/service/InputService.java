@@ -24,19 +24,17 @@ public class InputService implements Runnable {
     @Override
     public void run() {
 
-        String action;
+        String action = "";
 
-        while(!Thread.currentThread().isInterrupted()){
+        while(!action.equals(Action.EXIT.getValue())){
             action = outputHelper.getInput();
-            if (action.equals(Action.EXIT.getValue())){
-                stopApp();
-            }
             try {
                 checkInput(action);
             } catch (NullPointerException e){
                 System.out.println("\nThere is no such command.");
             }
         }
+        stopApp();
     }
 
     private void checkInput(String input) throws NullPointerException{
@@ -86,8 +84,6 @@ public class InputService implements Runnable {
         if (args.length > 1){
             date = args[1];
             if (historyService.getHistory().keySet().contains(date)){
-                System.out.println(historyService.getHistory().containsKey(date));
-                System.out.println(historyService.getHistory().get(date));
                 outputService.printTable(historyService.getHistory().get(date));
             }
         }
