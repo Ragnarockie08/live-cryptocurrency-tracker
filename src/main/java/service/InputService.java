@@ -2,17 +2,23 @@ package service;
 
 import crypto.CryptoCurrency;
 import helper.Action;
+import helper.OutputHelper;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class InputService implements Runnable {
 
     private static List<CryptoCurrency> observedCurrencies = new ArrayList<>();
-    private volatile boolean run;
+    private OutputHelper outputHelper;
+    private HistoryService historyService;
+    private OutputService outputService;
 
-    public InputService() {
-        run = true;
+
+    public InputService(OutputHelper outputHelper, HistoryService historyService, OutputService outputService){
+        this.outputHelper = outputHelper;
+        this.historyService = historyService;
+        this.outputService = outputService;
     }
 
     @Override
@@ -20,8 +26,8 @@ public class InputService implements Runnable {
 
         String action;
 
-        while(isRunning()){
-            action = getInput();
+        while(!Thread.currentThread().isInterrupted()){
+            action = outputHelper.getInput();
             if (action.equals(Action.EXIT.getValue())){
                 stopApp();
             }
@@ -40,6 +46,10 @@ public class InputService implements Runnable {
 
         if (action.equals(Action.SELECT)) {
             runSelect(args);
+        } else if (action.equals(Action.SORT)){
+            runSort(args);
+        } else if (action.equals(Action.HISTORY)){
+            runHistory(args);
         }
     }
 
@@ -57,23 +67,35 @@ public class InputService implements Runnable {
         }
     }
 
-    private boolean isRunning(){
-        return run;
+    private void runSort(String[] args){
+
+        String columnNum;
+
+        if (args.length > 1){
+            columnNum = args[1];
+            if (columnNum.matches("^[0-9]$|^10$|^11$|^12$")){
+                OutputService.setColumnNumberToSortBy(Integer.valueOf(columnNum));
+            }
+        }
+    }
+
+    private void runHistory(String[] args){
+
+        String date;
+
+        if (args.length > 1){
+            date = args[1];
+            if (historyService.getHistory().keySet().contains(date)){
+                System.out.println(historyService.getHistory().containsKey(date));
+                System.out.println(historyService.getHistory().get(date));
+                outputService.printTable(historyService.getHistory().get(date));
+            }
+        }
+
     }
 
     private void stopApp(){
-       System.exit(0);
-    }
-
-    private String getInput(){
-
-        String input;
-        Scanner scanner;
-
-        scanner = new Scanner(System.in);
-        input = scanner.nextLine();
-
-        return input;
+        System.exit(0);
     }
 
     public static List<CryptoCurrency> getObservedCurrencies() {

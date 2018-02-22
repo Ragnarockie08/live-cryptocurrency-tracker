@@ -1,6 +1,7 @@
 package service;
 
 import crypto.CryptoCurrency;
+import helper.OutputHelper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,11 +11,13 @@ public class Service implements Runnable {
 
     private OutputService outputService;
     private RestTemplate restTemplate;
+    private OutputHelper outputHelper;
     private static List<CryptoCurrency> currentResponse = new ArrayList<>();
 
-    public Service(OutputService outputService, RestTemplate restTemplate) {
+    public Service(OutputService outputService, RestTemplate restTemplate, OutputHelper outputHelper) {
         this.outputService = outputService;
         this.restTemplate = restTemplate;
+        this.outputHelper = outputHelper;
     }
 
     @Override
@@ -37,8 +40,7 @@ public class Service implements Runnable {
         ResponseEntity<CryptoCurrency[]> response = restTemplate
                 .getForEntity("https://api.coinmarketcap.com/v1/ticker/", CryptoCurrency[].class);
 
-        clearScreen();
-
+        outputHelper.clearScreen();
         currentResponse = Arrays.asList(response.getBody());
     }
 
