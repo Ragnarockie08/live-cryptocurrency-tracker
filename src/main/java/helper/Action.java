@@ -4,7 +4,8 @@ public enum Action {
 
     SELECT("select"),
     CHECK("check"),
-    EXIT("exit");
+    EXIT("exit"),
+    SORT("sort");
 
     private String action;
 
