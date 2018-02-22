@@ -1,5 +1,6 @@
 package service;
 
+
 import crypto.CryptoCurrency;
 import helper.Action;
 import helper.OutputHelper;
@@ -9,13 +10,14 @@ import java.util.List;
 
 public class InputService implements Runnable {
 
-    private static List<CryptoCurrency> observedCurrencies = new ArrayList<>();
+    private List<String> observedCurrencies = new ArrayList<>();
     private OutputHelper outputHelper;
     private HistoryService historyService;
     private OutputService outputService;
 
 
     public InputService(OutputHelper outputHelper, HistoryService historyService, OutputService outputService){
+
         this.outputHelper = outputHelper;
         this.historyService = historyService;
         this.outputService = outputService;
@@ -28,9 +30,10 @@ public class InputService implements Runnable {
 
         while(!action.equals(Action.EXIT.getValue())){
             action = outputHelper.getInput();
+            Service.setIsRunning(true);
             try {
                 checkInput(action);
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 System.out.println("\nThere is no such command.");
             }
         }
@@ -41,8 +44,6 @@ public class InputService implements Runnable {
 
         String[] args = input.split(" +");
         Action action = Action.getInstance(args[0]);
-        Service.setIsRunning(true);
-
         if (action.equals(Action.SELECT)) {
             runSelect(args);
         } else if (action.equals(Action.SORT)){
@@ -59,8 +60,8 @@ public class InputService implements Runnable {
         if (args.length > 1) {
             symbol = args[1];
             for (CryptoCurrency currency : Service.getCurrentResponse()) {
-                if (currency.getSymbol().equals(symbol) && !observedCurrencies.contains(currency)) {
-                    observedCurrencies.add(currency);
+                if (currency.getSymbol().equals(symbol) && !observedCurrencies.contains(currency.getSymbol())) {
+                    observedCurrencies.add(currency.getSymbol());
                 }
             }
         }
@@ -80,23 +81,29 @@ public class InputService implements Runnable {
 
     private void runHistory(String[] args){
 
-        Service.setIsRunning(false);
         String date;
+        Service.setIsRunning(false);
 
-        if (args.length > 1){
+        if (args.length > 1) {
             date = args[1];
-            if (historyService.getHistory().keySet().contains(date)){
+            if (historyService.getHistory().keySet().contains(date)) {
                 outputService.printTable(historyService.getHistory().get(date));
             }
         }
-
     }
 
     private void stopApp(){
         System.exit(0);
     }
 
-    public static List<CryptoCurrency> getObservedCurrencies() {
-        return observedCurrencies;
+    public List<CryptoCurrency> refreshList(){
+
+        List<CryptoCurrency> currentCurrency = new ArrayList<>();
+        for (CryptoCurrency responseCurrency: Service.getCurrentResponse()) {
+            if (observedCurrencies.contains(responseCurrency.getSymbol())){
+                currentCurrency.add(responseCurrency);
+            }
+        }
+        return currentCurrency;
     }
 }

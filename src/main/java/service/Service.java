@@ -11,17 +11,19 @@ public class Service implements Runnable {
     private OutputService outputService;
     private RestTemplate restTemplate;
     private OutputHelper outputHelper;
-    private static List<CryptoCurrency> currentResponse = new ArrayList<>();
+    private InputService inputService;
     private static boolean isRunning = true;
+    private static List<CryptoCurrency> currentResponse = new ArrayList<>();
 
-    public Service(OutputService outputService, RestTemplate restTemplate, OutputHelper outputHelper) {
+    public Service(OutputService outputService, OutputHelper outputHelper, InputService inputService) {
         this.outputService = outputService;
-        this.restTemplate = restTemplate;
+        this.restTemplate = new RestTemplate();
         this.outputHelper = outputHelper;
+        this.inputService = inputService;
     }
 
     @Override
-    public void run() {
+    public void run(){
 
         while(!Thread.currentThread().isInterrupted()){
             if (!isRunning){
@@ -29,7 +31,7 @@ public class Service implements Runnable {
             }
             try{
                 getResponse();
-                outputService.printTable(InputService.getObservedCurrencies());
+                outputService.printTable(inputService.refreshList());
                 Thread.sleep(10000);
             } catch (InterruptedException e){
                 System.out.println("Data loading service error");
