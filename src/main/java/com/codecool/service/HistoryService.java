@@ -1,6 +1,6 @@
 package com.codecool.service;
 
-import com.codecool.crypto.CryptoCurrency;
+import com.codecool.model.CryptoCurrency;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;

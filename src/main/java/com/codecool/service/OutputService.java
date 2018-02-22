@@ -1,6 +1,6 @@
 package com.codecool.service;
 
-import com.codecool.crypto.CryptoCurrency;
+import com.codecool.model.CryptoCurrency;
 import dnl.utils.text.table.TextTable;
 import org.springframework.stereotype.Component;
 
