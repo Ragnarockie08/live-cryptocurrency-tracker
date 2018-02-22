@@ -1,4 +1,4 @@
-package com.codecool.crypto;
+package com.codecool.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -1,6 +1,6 @@
 package com.codecool.service;
 
-import com.codecool.crypto.CryptoCurrency;
+import com.codecool.model.CryptoCurrency;
 import com.codecool.helper.OutputHelper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
