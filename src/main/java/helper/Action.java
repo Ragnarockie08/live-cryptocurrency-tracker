@@ -5,7 +5,8 @@ public enum Action {
     SELECT("select"),
     CHECK("check"),
     EXIT("exit"),
-    SORT("sort");
+    SORT("sort"),
+    HISTORY("history");
 
     private String action;
 
