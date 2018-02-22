@@ -21,6 +21,7 @@ public class HistoryService implements Runnable {
 
         while (!Thread.currentThread().isInterrupted()){
             try {
+                Thread.sleep(1000);
                 addToHistory();
                 Thread.sleep(360000);
             } catch (InterruptedException e){
@@ -34,7 +35,7 @@ public class HistoryService implements Runnable {
         String timeStamp = new SimpleDateFormat("yyyyMMdd")
                                  .format(Calendar.getInstance()
                                  .getTime());
-        history.put( timeStamp, InputService.getObservedCurrencies());
+        history.put( timeStamp, Service.getCurrentResponse());
 
     }
 

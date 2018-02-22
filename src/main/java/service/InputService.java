@@ -41,6 +41,7 @@ public class InputService implements Runnable {
 
         String[] args = input.split(" +");
         Action action = Action.getInstance(args[0]);
+        Service.setIsRunning(true);
 
         if (action.equals(Action.SELECT)) {
             runSelect(args);
@@ -79,6 +80,7 @@ public class InputService implements Runnable {
 
     private void runHistory(String[] args){
 
+        Service.setIsRunning(false);
         String date;
 
         if (args.length > 1){

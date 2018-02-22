@@ -4,7 +4,6 @@ import crypto.CryptoCurrency;
 import helper.OutputHelper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.*;
 
 public class Service implements Runnable {
@@ -13,6 +12,7 @@ public class Service implements Runnable {
     private RestTemplate restTemplate;
     private OutputHelper outputHelper;
     private static List<CryptoCurrency> currentResponse = new ArrayList<>();
+    private static boolean isRunning = true;
 
     public Service(OutputService outputService, RestTemplate restTemplate, OutputHelper outputHelper) {
         this.outputService = outputService;
@@ -24,6 +24,9 @@ public class Service implements Runnable {
     public void run() {
 
         while(!Thread.currentThread().isInterrupted()){
+            if (!isRunning){
+                continue;
+            }
             try{
                 getResponse();
                 outputService.printTable(InputService.getObservedCurrencies());
@@ -48,8 +51,7 @@ public class Service implements Runnable {
         return currentResponse;
     }
 
-    private void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public static void setIsRunning(boolean isRunning) {
+        Service.isRunning = isRunning;
     }
 }

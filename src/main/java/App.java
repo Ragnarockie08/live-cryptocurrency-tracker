@@ -6,7 +6,7 @@ import service.Service;
 
 public class App {
 
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(String args[]){
         OutputService outputService = new OutputService();
         RestTemplate restTemplate = new RestTemplate();
         OutputHelper outputHelper = new OutputHelper();
